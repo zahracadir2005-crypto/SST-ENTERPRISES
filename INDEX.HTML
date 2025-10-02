@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SST ENTERPRISES</title>
+  <meta name="description" content="SST Enterprises — Handmade goods & imported elegance, and premium style">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --brown:#5a381e;
+      --orange:#e07b39;
+      --white:#ffffff;
+      --muted:#fff7f1;
+      --shadow: rgba(90,56,30,0.08);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Segoe UI', Roboto, Arial, sans-serif;background:var(--muted);color:var(--brown);-webkit-font-smoothing:antialiased;}
+
+    /* Loader */
+    #loader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(248,242,238,0.95),rgba(255,255,255,0.98));z-index:9999;transition:opacity .6s ease,visibility .6s ease,transform .6s ease;}
+    #loader.hidden{opacity:0;visibility:hidden;transform:translateY(-12px);pointer-events:none}
+    .loader-inner{display:flex;flex-direction:column;align-items:center;gap:14px}
+    .loader-ring{width:90px;height:90px;border-radius:90%;border:8px solid rgba(90,56,30,0.12);border-top-color:var(--orange);animation:spin 1.1s linear infinite;box-shadow:0 8px 30px rgba(224,126,57,0.12)}
+    .loader-text{font-family:'Cinzel', serif;font-weight:700;letter-spacing:3px;color:var(--brown);font-size:20px;text-transform:uppercase}
+    .loader-sub{font-size:12px;color:#7b5a4a}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Header */
+    header{background:linear-gradient(135deg,var(--brown),var(--orange));color:white;padding:22px 18px;text-align:center;position:sticky;top:0;z-index:1000;}
+    header h1{margin:10px 0 0;font-family:'Cinzel', serif;font-size:2.4rem;letter-spacing:2px;font-weight:700}
+    header .profile-logo{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:8px}
+    header img{border-radius:50%;object-fit:cover;width:64px;height:64px;border:2px solid #fff;box-shadow:0 2px 10px rgba(0,0,0,0.15)}
+    nav{margin-top:10px}
+    nav a{color:rgba(255,255,255,0.95);margin:0 10px;text-decoration:none;font-weight:600}
+
+    .container{max-width:1100px;margin:28px auto;padding:0 18px}
+
+    /* Hero */
+    .hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:40px 18px;background:var(--white);border-radius:16px;box-shadow:0 10px 30px var(--shadow);transform:translateY(20px);opacity:0}
+    .hero.revealed{transform:none;opacity:1;transition:all .9s cubic-bezier(.2,.9,.2,1)}
+    .hero h2{font-family:'Playfair Display', serif;font-size:2.2rem;margin:8px 0;color:var(--brown);font-weight:600}
+    .hero p{color:#7b5a4a;margin:6px 0 16px;max-width:820px;font-size:1.05rem}
+    .btn{display:inline-block;padding:12px 24px;border-radius:40px;font-weight:700;text-decoration:none;color:var(--white);background:var(--brown);box-shadow:0 8px 20px rgba(90,56,30,0.08);transition:transform .25s ease,box-shadow .25s ease}
+    .btn:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(90,56,30,0.12)}
+
+    /* Gallery */
+    .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-top:26px}
+    .card{background:linear-gradient(180deg,#fff,#fffaf5);border-radius:12px;padding:14px;box-shadow:0 8px 18px var(--shadow);overflow:hidden;transform:translateY(12px);opacity:0}
+    .card.revealed{transform:none;opacity:1;transition:all .7s cubic-bezier(.2,.9,.2,1)}
+    .card img{width:100%;height:260px;object-fit:cover;border-radius:10px;display:block}
+    .card h4{margin:10px 0 6px;font-family:'Playfair Display', serif;font-size:1.3rem;color:var(--brown)}
+    .card p{margin:0;color:#7b5a4a;font-size:14px}
+
+    /* Contact */
+    .contact{margin-top:28px;background:linear-gradient(180deg,#fff,#fff8f3);padding:28px;border-radius:12px;box-shadow:0 10px 30px var(--shadow)}
+    form{max-width:700px;margin:0 auto;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    form input,form textarea{padding:12px;border-radius:8px;border:1px solid rgba(90,56,30,0.06);font-size:15px}
+    form textarea{grid-column:1/3;min-height:120px}
+    .form-actions{grid-column:1/3;display:flex;gap:12px;align-items:center}
+    .tertiary{background:transparent;border:1px solid rgba(90,56,30,0.08);color:var(--brown);padding:10px 16px;border-radius:10px}
+
+    footer{margin-top:26px;padding:20px;text-align:center;color:#6b4b3b}
+    footer a{color:var(--orange);text-decoration:none}
+
+    /* Settings Panel */
+    #settings-btn{position:fixed;bottom:18px;right:18px;background:var(--brown);color:#fff;border:none;border-radius:50%;width:52px;height:52px;cursor:pointer;font-size:20px;box-shadow:0 4px 15px rgba(0,0,0,0.2)}
+    #settings-panel{position:fixed;bottom:80px;right:18px;background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.2);padding:20px;display:none;flex-direction:column;gap:14px;z-index:1200;width:260px}
+    #settings-panel input{border:1px solid #ddd;padding:6px;border-radius:6px;font-size:14px}
+    #settings-panel button{padding:8px 12px;border:none;border-radius:6px;background:var(--orange);color:#fff;font-weight:600;cursor:pointer}
+    #settings-panel h4{margin:0;font-family:'Cinzel', serif;color:var(--brown)}
+
+    @media(max-width:780px){
+      header h1{font-size:1.8rem}
+      .card img{height:180px}
+      form{grid-template-columns:1fr}
+      form textarea{grid-column:1/2}
+    }
+  </style>
+</head>
+<body>
+  <!-- Loader -->
+  <div id="loader" aria-hidden="true">
+    <div class="loader-inner">
+      <div class="loader-ring"></div>
+      <div class="loader-text">SST ENTERPRISES</div>
+      <div class="loader-sub">Imported elegance • Handmade</div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="profile-logo">
+      <img id="site-logo" src="https://via.placeholder.com/64" alt="Site Logo">
+      <h1>SST ENTERPRISES</h1>
+      <img id="profile-pic" src="https://via.placeholder.com/64" alt="Profile Picture">
+    </div>
+    <nav>
+      <a href="#gallery">Products</a>
+      <a href="#contact">Contact</a>
+      <a href="https://www.instagram.com/invites/contact/?utm_source=ig_contact_invite&utm_medium=copy_link&utm_content=z6i5a91" target="_blank">Instagram</a>
+      <a href="https://www.facebook.com/profile.php?id=61579442402191" target="_blank">Facebook</a>
+      <a href="https://youtube.com/@sstenterprises-k2r?si=KaYGVuBWYPfvIFV4" target="_blank">YouTube</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <main class="container">
+    <section class="hero" id="hero">
+      <h2>Imported Elegance, Handmade Perfection</h2>
+      <p>Beautiful handmade jewellery, curated imported finds and elegant fashion — thoughtfully selected for quality and style.</p>
+      <a class="btn" href="https://wa.me/REPLACE_YOUR_NUMBER?text=Hello%20SST%20Enterprises!%20I%20want%20to%20shop" target="_blank" rel="noopener">Shop Now</a>
+    </section>
+
+    <!-- Gallery -->
+    <section class="gallery" id="gallery">
+      <article class="card" id="card-1">
+        <img id="gallery-1" src="https://via.placeholder.com/400x260?text=Gallery+1" alt="Handmade jewellery on display">
+        <h4>Handmade Jewellery</h4>
+        <p>Unique, handcrafted pieces — made with care and attention to detail.</p>
+      </article>
+
+      <article class="card" id="card-2">
+        <img id="gallery-2" src="https://via.placeholder.com/400x260?text=Gallery+2" alt="Elegant dress">
+        <h4>Elegant Dresses</h4>
+        <p>Decent, elegant designs curated for style and comfort.</p>
+      </article>
+
+      <article class="card" id="card-3">
+        <img id="gallery-3" src="https://via.placeholder.com/400x260?text=Gallery+3" alt="Classic shoes">
+        <h4>Quality Footwear</h4>
+        <p>Comfortable and stylish shoes that complement any outfit.</p>
+      </article>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+      <h3 style="text-align:center;margin-top:0;font-family:'Cinzel', serif">Contact Us</h3>
+      <p style="text-align:center;color:#7b5a4a">Send your order details — messages will be emailed to us privately.</p>
+
+      <form action="mailto:sstbyzhr25@gmail.com" method="post" enctype="text/plain">
+        <input type="text" name="name" placeholder="Full name" required>
+        <input type="text" name="address" placeholder="Delivery address" required>
+        <input type="email" name="email" placeholder="Email address" required>
+        <input type="text" name="phone" placeholder="Phone number (optional)">
+        <textarea name="message" placeholder="Message / Order details" required></textarea>
+        <div class="form-actions">
+          <button type="submit" class="btn">Send Message</button>
+          <a class="tertiary" href="https://www.facebook.com/profile.php?id=61579442402191" target="_blank">Visit Facebook</a>
+          <a class="tertiary" href="https://www.instagram.com/invites/contact/?utm_source=ig_contact_invite&utm_medium=copy_link&utm_content=z6i5a91" target="_blank">Instagram</a>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>© <strong>SST ENTERPRISES</strong> • Handmade & Imported • All rights reserved</p>
+    <p><a href="mailto:sstbyzhr25@gmail.com">sstbyzhr25@gmail.com</a></p>
+  </footer>
+
+  <!-- Settings Button -->
+  <button id="settings-btn">⚙</button>
+  <div id="settings-panel">
+    <h4>Site Settings</h4>
+    <label>Upload Logo <input type="file" id="logo-input" accept="image/*"></label>
+    <label>Upload Profile <input type="file" id="profile-input" accept="image/*"></label>
+    <label>Upload Gallery 1 <input type="file" id="gallery1-input" accept="image/*"></label>
+    <label>Upload Gallery 2 <input type="file" id="gallery2-input" accept="image/*"></label>
+    <label>Upload Gallery 3 <input type="file" id="gallery3-input" accept="image/*"></label>
+    <div style="display:flex;gap:8px">
+      <button id="save-settings">Save</button>
+      <button id="reset-settings" style="background:#999">Reset</button>
+    </div>
+  </div>
+
+  <script>
+    const LOADER_DELAY_MS = 800;
+    window.addEventListener('load',()=>{
+      const loader=document.getElementById('loader');
+      setTimeout(()=>{
+        loader.classList.add('hidden');
+        document.getElementById('hero').classList.add('revealed');
+        const cards=document.querySelectorAll('.card');
+        cards.forEach((c,i)=>setTimeout(()=>c.classList.add('revealed'),160*i+200));
+      },LOADER_DELAY_MS);
+    });
+
+    // Settings panel logic
+    const settingsBtn=document.getElementById('settings-btn');
+    const settingsPanel=document.getElementById('settings-panel');
+
+    const siteLogo=document.getElementById('site-logo');
+    const profilePic=document.getElementById('profile-pic');
+    const gallery1=document.getElementById('gallery-1');
+    const gallery2=document.getElementById('gallery-2');
+    const gallery3=document.getElementById('gallery-3');
+
+    settingsBtn.addEventListener('click',()=>{
+      settingsPanel.style.display=settingsPanel.style.display==='flex'?'none':'flex';
+    });
+
+    function previewAndSave(input,imgElem,key){
+      const file=input.files[0];
+      if(file){
+        const reader=new FileReader();
+        reader.onload=()=>{imgElem.src=reader.result;localStorage.setItem(key,reader.result)};
+        reader.readAsDataURL(file);
+      }
+    }
+
+    document.getElementById('logo-input').addEventListener('change',e=>previewAndSave(e.target,siteLogo,'sst_logo'));
+    document.getElementById('profile-input').addEventListener('change',e=>previewAndSave(e.target,profilePic,'sst_profile'));
+    document.getElementById('gallery1-input').addEventListener('change',e=>previewAndSave(e.target,gallery1,'sst_gallery1'));
+    document.getElementById('gallery2-input').addEventListener('change',e=>previewAndSave(e.target,gallery2,'sst_gallery2'));
+    document.getElementById('gallery3-input').addEventListener('change',e=>previewAndSave(e.target,gallery3,'sst_gallery3'));
+
+    document.getElementById('save-settings').addEventListener('click',()=>{
+      alert('Settings saved. Images updated.');
+      settingsPanel.style.display='none';
+    });
+
+    document.getElementById('reset-settings').addEventListener('click',()=>{
+      localStorage.removeItem('sst_logo');
+      localStorage.removeItem('sst_profile');
+      localStorage.removeItem('sst_gallery1');
+      localStorage.removeItem('sst_gallery2');
+      localStorage.removeItem('sst_gallery3');
+      siteLogo.src='https://via.placeholder.com/64';
+      profilePic.src='https://via.placeholder.com/64';
+      gallery1.src='https://via.placeholder.com/400x260?text=Gallery+1';
+      gallery2.src='https://via.placeholder.com/400x260?text=Gallery+2';
+      gallery3.src='https://via.placeholder.com/400x260?text=Gallery+3';
+      alert('Settings reset.');
+    });
+
+    window.addEventListener('DOMContentLoaded',()=>{
+      if(localStorage.getItem('sst_logo')) siteLogo.src=localStorage.getItem('sst_logo');
+      if(localStorage.getItem('sst_profile')) profilePic.src=localStorage.getItem('sst_profile');
+      if(localStorage.getItem('sst_gallery1')) gallery1.src=localStorage.getItem('sst_gallery1');
+      if(localStorage.getItem('sst_gallery2')) gallery2.src=localStorage.getItem('sst_gallery2');
+      if(localStorage.getItem('sst_gallery3')) gallery3.src=localStorage.getItem('sst_gallery3');
+    });
+  </script>
+</body>
+</html>
